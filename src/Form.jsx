@@ -3,24 +3,40 @@ import axios from "axios";
 
 const Form = () => {
   const [payload, setPayload] = useState({
-    path: "",
+    pathSource: "/tmp/50-cloud-init.yaml",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await axios.post("http://localhost:8000/backup", payload);
-    console.log(res?.data);
+
+    try {
+      const res = await axios.get("http://localhost:8000/backup", {
+        params: { pathSource: payload.pathSource },
+        responseType: 'blob',
+      });
+
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(res.data);
+      link.download = payload.pathSource.split("/").pop();
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading the file:", error);
+    }
   };
 
   return (
     <>
       <form onSubmit={handleSubmit}>
+        <label htmlFor="source">Path Source File</label>
         <input
+          id="source"
           type="text"
-          placeholder="Enter your Path"
-          onChange={(e) => setPayload({ ...payload, path: e.target.value })}
+          value={payload.pathSource}
+          onChange={(e) => setPayload({ ...payload, pathSource: e.target.value })}
         />
-        <button type="submit">Submit</button>
+        <button type="submit">Download File</button>
       </form>
     </>
   );
