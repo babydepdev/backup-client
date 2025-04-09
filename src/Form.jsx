@@ -9,13 +9,13 @@ const Form = () => {
         responseType: "blob",
       });
 
-      const blob = new Blob([res.data], { type: "application/gzip" });
+      const blob = new Blob([res.data], { type: "application/x-tar" });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
 
       const dayOfWeek = new Date().toLocaleDateString("en-US", { weekday: "long" });
-      link.download = `${dayOfWeek}.tar.gz`;
+      link.download = `Backup_${dayOfWeek}.tar`;
 
       document.body.appendChild(link);
       link.click();
