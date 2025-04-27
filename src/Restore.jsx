@@ -9,7 +9,7 @@ const Restore = () => {
         const formData = new FormData()
         formData.append("file", file)
         console.log(formData)
-        fetch("http://localhost:8000/restore", {
+        fetch("http://172.20.10.3:8000/restore", {
             method: "POST",
             body: formData
         })

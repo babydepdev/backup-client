@@ -14,8 +14,18 @@ const Form = () => {
       const link = document.createElement("a");
       link.href = url;
 
-      const dayOfWeek = new Date().toLocaleDateString("en-US", { weekday: "long" });
-      link.download = `Backup_${dayOfWeek}.tar`;
+      // ===== ปรับตรงนี้ =====
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+      const filename = `Backup_${year}-${month}-${day}-${hours}-${minutes}-${seconds}.tar`;
+
+      link.download = filename;
+      // ======
 
       document.body.appendChild(link);
       link.click();
